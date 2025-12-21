@@ -128,14 +128,17 @@ select{
   height: 30px;
   background: transparent;
   font-family: $fontFamily;
-  ::placeholder{
-    color: $secColor !important;
+  &::placeholder{
+    color: grey !important;
   }
 }
 
 textarea{
   max-height: 60px;
   font-size: 14px;
+  &:focus{
+    border-color: $mainColor;
+  }
 }
 
 // button

@@ -6,6 +6,7 @@
 @import "./form";
 @import "./popup";
 @import "./flex_buttons";
+@import "./grid_items";
 
 
 
@@ -26,5 +27,60 @@
   }
 }
 
+// DRAFT ITEM STYLE 
+.drafted_item{
+  background: grey;
+  border-color: grey !important;
+  &:hover{
+    background: grey !important;
+    .image{
+      filter: brightness(0) invert(1) !important;
+    }
+    .item_control{
+      opacity: 1 !important;
+      pointer-events: visible;
+    }
+  }
+}
 
 
+// --------------------------
+// ------- Red Msg ----------
+// --------------------------
+span[role="alert"] {
+  display: block;
+  color: red;
+  margin-bottom: 10px;
+  font-weight: 400;
+  font-size: 12px;
+  &::before{
+    content: '* ';
+  }
+}
+
+
+// ---------------------------
+// ------> ANIMATION <--------
+// ---------------------------
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+@keyframes floatParticles {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px);
+  }
+  50% {
+    transform: translateY(-10px) translateX(-15px);
+  }
+  75% {
+    transform: translateY(15px) translateX(5px);
+  }
+}

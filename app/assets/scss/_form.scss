@@ -10,9 +10,10 @@ form,
 
 
   .inputs{
-    @include displayFlex();
+    @include displayFlex($align : flex-start);
     .input-wrap{
-      flex-grow: 1;
+      width: 100%;
+      // flex-grow: 1;
     }
   }
 
@@ -75,24 +76,6 @@ form,
         color: $mainColor;
         font-weight: 900;
         margin-inline-start: 5px;
-      }
-    }
-  }
-}
-
-
-.auth_page{
-  .form,
-  form{
-    .input-wrap{
-      &:last-of-type{
-        .input{
-          border: none;
-          justify-content: flex-start;
-          input{
-            width: 20px;
-          }
-        }
       }
     }
   }

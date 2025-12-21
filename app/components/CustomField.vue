@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="input-wrap">
     <VeeField 
       :name="props.name" 
       :type="props.type" 
@@ -43,12 +43,6 @@
     background: #e4e4e499;
     margin-bottom: 5px;
     border-radius: 5px;
-  }
-
-  span[role="alert"] {
-    display: block;
-    color: red;
-    margin-bottom: 10px;
   }
 </style>
 

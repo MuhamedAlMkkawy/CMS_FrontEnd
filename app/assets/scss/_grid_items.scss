@@ -1,0 +1,33 @@
+.items_content{
+  &.items_6{
+    .content_item{
+      max-width: 15%;
+    }
+  }
+  &.items_4{
+    .content_item{
+      max-width: 24%;
+    }
+  }
+  &.items_3{
+    .content_item{
+      max-width: 29%;
+    }
+  }
+  &.items_2{
+    .content_item{
+      max-width: 49%;
+    }
+  }
+  &.items_1{
+    .content_item{
+      max-width: 70%;
+    }
+  }
+  @media (max-width : 567px){
+    @include displayGrid();
+    .content_item{
+      max-width: unset !important;
+    }
+  }
+}

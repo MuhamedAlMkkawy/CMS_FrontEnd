@@ -21,14 +21,14 @@ export default defineNuxtConfig({
       mode: "out-in",
     },
     head: {
-      title:'Website Title',
+      title:'CMS Dashboard',
       htmlAttrs: { lang: 'ar' },
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Website Title' },
+        { name: 'description', content: 'CMS Dashboard' },
       ],
-      // link: [{ rel: 'icon', type: 'image/x-icon', href: '/logo.ico' }],
+      link: [{ rel: 'icon', type: 'image/x-icon', href: '/logo.ico' }],
     },
   },
 
@@ -113,7 +113,7 @@ export default defineNuxtConfig({
   },
 
   css: [
-    "@/assets/css/style.css",
+    "@/assets/scss/style.scss",
     "primeicons/primeicons.css"
     // 'primevue/resources/themes/aura-light-green/theme.css'
   ],

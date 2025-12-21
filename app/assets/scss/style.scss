@@ -9,7 +9,9 @@
 @import "./grid_items";
 
 
-
+.page{
+  padding-block: 50px;
+}
 .container{
   max-width: clamp(300px, 100%, 1800px);
   margin: 0 auto;

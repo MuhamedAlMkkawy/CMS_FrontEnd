@@ -1,4 +1,7 @@
 import { defineNuxtRouteMiddleware } from 'nuxt/app';
 
-export default defineNuxtRouteMiddleware((to, from) => {});
+export default defineNuxtRouteMiddleware((to, from) => {
+  console.log(from)
+  console.log(to)
+});
 

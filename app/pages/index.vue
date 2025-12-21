@@ -5,7 +5,7 @@
         <img src="../assets/images/logo.png" alt="logo image" loading="lazy">
       </div>
       <div class="items_content items_4">
-        <NuxtLink v-for="project in projectItems" :key="project.id" :class="['content_item', { 'drafted_item': project.isDrafted }]">
+        <NuxtLink v-for="project in projectItems" :key="project.id" :to="`/modify_project/${project.id}`" :class="['content_item', { 'drafted_item': project.isDrafted }]">
           <div class="image">
             <img :src="project.image" alt="board image" loading="lazy">
           </div>
@@ -30,11 +30,11 @@
 
   const projectItems = ref([
     { id: 1, image: boardImg, isDrafted: false },
-    { id: 2, image: boardImg, isDrafted: true },
-    { id: 3, image: boardImg, isDrafted: false },
-    { id: 4, image: boardImg, isDrafted: true },
-    { id: 5, image: boardImg, isDrafted: false },
-    { id: 6, image: boardImg, isDrafted: true }
+    // { id: 2, image: boardImg, isDrafted: true },
+    // { id: 3, image: boardImg, isDrafted: false },
+    // { id: 4, image: boardImg, isDrafted: true },
+    // { id: 5, image: boardImg, isDrafted: false },
+    // { id: 6, image: boardImg, isDrafted: true }
   ])
 
   // const { data } = useApiAsyncData('projects', 'https://dummyjson.com/products' , false , true);

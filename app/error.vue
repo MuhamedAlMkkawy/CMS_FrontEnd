@@ -26,6 +26,7 @@
 </template>
 
 <script setup>
+  import { useGlobalStore } from './stores/globalStore';
   import NotFoundEyes from './components/NotFoundEyes.vue';
   
   // define global store

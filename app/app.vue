@@ -23,7 +23,7 @@
 
 
 <style>
-  .page-enter-active,
+  /* .page-enter-active,
   .page-leave-active {
     transition: all 1s;
   }
@@ -31,6 +31,5 @@
   .page-leave-to {
     opacity: 0;
     transform: scale(0.7) rotate(4deg);
-    /* transform: translateY(50%) rotate(45deg); */
-  }
+  } */
 </style>

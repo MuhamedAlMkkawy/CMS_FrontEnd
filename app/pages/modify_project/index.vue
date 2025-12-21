@@ -61,7 +61,7 @@
 
   const handleSubmit = (values) => {
     const formData = new FormData();
-    formData.append('image', body.value.image.file);
+    formData.append('image', image.value.file);
     formData.append('ar_name', values.ar_name);
     formData.append('en_name', values.en_name);
     formData.append('ar_description', values.ar_description);
@@ -92,6 +92,7 @@
           }
           img{
             transition: 0.3s;
+            object-fit: contain;
             &:hover{
               filter: brightness(0.7);
             }

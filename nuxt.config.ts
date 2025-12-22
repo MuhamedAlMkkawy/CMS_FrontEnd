@@ -4,10 +4,9 @@ import Aura from '@primeuix/themes/aura';
 
 
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: "2025-07-15",
   devtools: { enabled: false },
 
-  
   runtimeConfig: {
     public: {
       // apiBase: "https://mazadaty-app.com/api/",
@@ -21,103 +20,89 @@ export default defineNuxtConfig({
       mode: "out-in",
     },
     head: {
-      title:'CMS Dashboard',
-      htmlAttrs: { lang: 'ar' },
+      title: "CMS Dashboard",
+      htmlAttrs: { lang: "ar" },
       meta: [
-        { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'CMS Dashboard' },
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { name: "description", content: "CMS Dashboard" },
       ],
-      link: [{ rel: 'icon', type: 'image/x-icon', href: '/logo.ico' }],
+      link: [{ rel: "icon", type: "image/x-icon", href: "/logo.ico" }],
     },
   },
 
   modules: [
-    '@primevue/nuxt-module',
-    '@nuxtjs/i18n',
-    '@nuxtjs/tailwindcss',
-    '@pinia/nuxt',
-    'pinia-plugin-persistedstate/nuxt',
-    '@vee-validate/nuxt',
-    'nuxt-yup',
+    "@primevue/nuxt-module",
+    "@nuxtjs/i18n",
+    "@nuxtjs/tailwindcss",
+    "@pinia/nuxt",
+    "pinia-plugin-persistedstate/nuxt",
+    "@vee-validate/nuxt",
+    "nuxt-yup",
   ],
-  
+
   veeValidate: {
     autoImports: true,
     componentNames: {
-      Form: 'VeeForm',
-      Field: 'VeeField',
-      ErrorMessage: 'VeeErrorMessage'
-    }
+      Form: "VeeForm",
+      Field: "VeeField",
+      ErrorMessage: "VeeErrorMessage",
+    },
   },
-
 
   imports: {
-    dirs: [
-      'stores' , 
-      'composables' , 
-      'helpers', 
-      'schemas' 
-    ], 
+    dirs: ["stores", "composables", "helpers", "schemas"],
     presets: [
       {
-        from: 'vee-validate',
-        imports: ['Field', 'Form', 'ErrorMessage', 'useField', 'useForm']
-      }
-    ]
+        from: "vee-validate",
+        imports: ["Field", "Form", "ErrorMessage", "useField", "useForm"],
+      },
+    ],
   },
 
-
   primevue: {
-    autoImport : true ,
+    autoImport: true,
     options: {
       // unstyled: true,
       zIndex: {
-        modal: 3000
+        modal: 3000,
       },
       ripple: true,
       theme: {
         preset: Aura,
         options: {
-          prefix: 'p',
-          darkModeSelector: '.dark',
-          cssLayer: false
-        }
-      }
-    }
+          prefix: "p",
+          darkModeSelector: ".dark",
+          cssLayer: false,
+        },
+      },
+    },
   },
 
   i18n: {
-    detectBrowserLanguage: false ,
+    detectBrowserLanguage: false,
     locales: [
       {
-        code: 'en',
-        iso: 'en-US',
-        file: 'en.json',
-        name: 'English',
-        dir: 'ltr',
+        code: "en",
+        iso: "en-US",
+        file: "en.json",
+        name: "English",
+        dir: "ltr",
       },
       {
-        code: 'ar',
-        iso: 'ar-SA',
-        file: 'ar.json',
-        name: 'العربية',
-        dir: 'rtl',
+        code: "ar",
+        iso: "ar-SA",
+        file: "ar.json",
+        name: "العربية",
+        dir: "rtl",
       },
     ],
-    langDir: '../app/locales/',
-    strategy: 'prefix_except_default',
+    langDir: "../app/locales/",
+    strategy: "prefix_except_default",
     // lazy: true,
-    defaultLocale: 'en',
-    vueI18n: './i18n.config.ts',
+    defaultLocale: "en",
+    vueI18n: "./i18n.config.ts",
   },
-
-  css: [
-    "@/assets/scss/style.scss",
-    "primeicons/primeicons.css"
-    // 'primevue/resources/themes/aura-light-green/theme.css'
-  ],
-
 
   vite: {
     css: {
@@ -132,4 +117,9 @@ export default defineNuxtConfig({
     },
   },
 
-})
+  css: [
+    "@/assets/scss/style.scss",
+    "primeicons/primeicons.css",
+    // 'primevue/resources/themes/aura-light-green/theme.css'
+  ],
+});

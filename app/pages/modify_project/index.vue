@@ -1,5 +1,5 @@
 <template>
-  <div class="page modify_project_page">
+  <div class="page modify_project_page gradient_background">
     <div class="container modify_project_content">
       <VeeForm 
         :validation-schema="modifyProjectSchema" 
@@ -46,6 +46,11 @@
 <script setup>
   import { modifyProjectSchema } from "../../schemas/modifyProject";
 
+  definePageMeta({
+    layout: 'none'
+  })
+
+
   // HADNLE THE BODY OF THE 
   const image = ref({
     file : null ,
@@ -73,7 +78,7 @@
 <style lang="scss" scoped>
   .modify_project_page{
     .modify_project_content{
-      min-height: 100vh;
+      min-height: 80vh;
       @include displayFlex();
       .form{
         max-width: 992px;
@@ -82,12 +87,12 @@
           @include displayFlex();
           margin: 0 auto 20px;
           @include circle(150px);
-          border: 1px solid $mainColor;
+          border: 1px solid #fff;
           cursor: pointer;
           z-index: 3;
           transition: 0.3s;
           i{
-            color: $mainColor;
+            // color: $mainColor;
             font-size: 30px;
           }
           img{
@@ -106,7 +111,7 @@
           + label{
             display: block;
             margin-bottom: 50px;
-            color: $mainColor;
+            // color: $mainColor;
             text-align: center;
           }
         }

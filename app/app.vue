@@ -1,10 +1,10 @@
 <template>
-  <NuxtLayout>
-    <!-- <div class="container"> -->
+  <div>
+    <NuxtLayout>
       <NuxtPage />
-    <!-- </div> -->
+    </NuxtLayout>
     <Toast />
-  </NuxtLayout>
+  </div>
 </template>
 
 <script setup>
@@ -23,7 +23,7 @@
 
 
 <style>
-  /* .page-enter-active,
+  .page-enter-active,
   .page-leave-active {
     transition: all 1s;
   }
@@ -31,5 +31,5 @@
   .page-leave-to {
     opacity: 0;
     transform: scale(0.7) rotate(4deg);
-  } */
+  }
 </style>

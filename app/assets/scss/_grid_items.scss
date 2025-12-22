@@ -1,4 +1,13 @@
-.items_content{
+.content_items{
+  @include displayFlex($wrap : wrap);
+  max-width: 95%;
+  width: 100%;
+  .content_item{
+    flex-grow: 1;
+    width: 100%;
+  }
+
+
   &.items_6{
     .content_item{
       max-width: 15%;

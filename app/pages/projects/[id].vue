@@ -73,7 +73,7 @@
             >
               <i
                 class="pi pi-stop"
-                v-for="i in section.layout_items"
+                v-for="i in (section.layout_items === 3 ? 1 : section.layout_items === 1 ? 2 : 3)"
                 :key="i"
               ></i>
             </button>

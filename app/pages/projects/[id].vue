@@ -15,15 +15,11 @@
           v-for="item in sidebarComponents"
           :key="item.type"
           class="component_item"
-          @click="addComponent(item.type)"
+          draggable="true"
+          @dragstart="onDragStart(item)"
         >
-          <!-- icon -->
           <i :class="item.icon" class="component_icon" />
-
-          <!-- title -->
-          <span class="component_title">
-            {{ item.label }}
-          </span>
+          <span class="component_title">{{ item.label }}</span>
           <i class="pi pi-equals"></i>
         </div>
       </ul>
@@ -85,9 +81,35 @@
 
         <hr />
         <div :class="['content_items', `items_${section.layout_items}`]">
-          <div class="content_item section_component"></div>
-          <div class="content_item section_component"></div>
-          <div class="content_item section_component"></div>
+          <div
+            class="content_item section_component"
+            :class="{ 'drag-over': section.isDragOver }"
+            @dragover.prevent
+            @dragenter="onDragEnter(section)"
+            @dragleave="onDragLeave(section)"
+            @drop="onDrop(section)"
+          >
+            <div
+              v-for="(comp, index) in section.components"
+              :key="comp.id"
+              class="section_block"
+            >
+              <i :class="comp.icon"></i>
+              <span>{{ comp.label }}</span>
+
+              <!-- controls -->
+              <button class="remove_component" @click.stop="removeComponent(section, index)">
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
+
+            <!-- empty state -->
+            <div v-if="!section.components.length" class="empty_placeholder">
+              Drag components here
+            </div>
+          </div>
+
+
         </div>
       </div>
 
@@ -256,11 +278,56 @@ const items = ref([
 // ----------------------------
 const sections = ref([
   {
-    id : 1 ,
-    name : 'Header' ,
-    layout_items : 3
-  }
-])
+    id: 1,
+    name: "Header",
+    layout_items: 3,
+    components: [], // { type, label, icon }
+    isDragOver: false,
+  },
+]);
+
+
+// ------------------------------
+// HANDLE DRAG & DROP COMPONENTS
+// ------------------------------
+const draggedComponent = ref(null);
+
+const onDragStart = (item) => {
+  draggedComponent.value = item;
+};
+
+
+const onDragEnter = (section) => {
+  section.isDragOver = true;
+};
+
+const onDragLeave = (section) => {
+  section.isDragOver = false;
+};
+
+
+const onDrop = (section) => {
+  if (!draggedComponent.value) return;
+
+  section.components.push({
+    id: Date.now(),
+    type: draggedComponent.value.type,
+    label: draggedComponent.value.label,
+    icon: draggedComponent.value.icon,
+  });
+
+  section.isDragOver = false;
+  draggedComponent.value = null;
+};
+
+// ---------------------------
+// HANDLE REMOVE THE COMPONENT
+// ---------------------------
+const removeComponent = (section, index) => {
+  section.components.splice(index, 1);
+};
+
+
 
 // ----------------------------
 // HANDLE CHANGE SECTION LAYOUT
@@ -334,75 +401,37 @@ const showAddSectionPopup = ref(false)
       max-height: 90vh;
       overflow-y: scroll;
       padding-block: 20px 0px;
-      .component_item {
-        @include displayFlex($gap: 8px, $justify: start);
-        padding: 20px;
-        padding-inline-end: 8px;
-        border: 1px solid #fff;
-        width: 95%;
-        color: #fff;
-        margin: 0 auto;
-        transition: 0.5s;
-        border-radius: 4px;
-        user-select: none;
-        &:hover {
-          background: #fff;
-          color: $mainColor;
-        }
 
-        .pi:last-of-type {
-          cursor: grab;
-          opacity: 0.4;
-          margin-inline-start: auto;
-          font-size: 15px;
-        }
-      }
     }
-    // ul.projects{
-    //   margin-top: 10px;
-    //   a{
-    //     color: #fff;
-    //     padding: 15px 20px;
-    //     margin: 0 0 15px;
-    //     max-width: 100%;
-    //     transition: 0.3s;
-    //     cursor: pointer;
-    //     display: flex;
-    //     img{
-    //       max-width: 150px;
-    //       filter: brightness(0) invert(0.5);
-    //     }
-    //     &:hover,
-    //     &.active{
-    //       background: #fff;
-    //       color: $mainColor;
-    //       img{
-    //         filter: unset;
-    //       }
-    //     }
-    //   }
-    // }
-
-    // button.control_header{
-    //   position: absolute;
-    //   bottom: 20px;
-    //   inset-inline-end: 0;
-    //   background: #fff;
-    //   padding: 15px;
-    //   border-radius: 50%  0 0  50%;
-    //   display: flex;
-    //   align-items: center;
-    //   transition: 0.3s;
-    //   border: 1px solid;
-    //   i{
-    //     font-size: 25px;
-    //   }
-    //   &:hover{
-    //     background: transparent;
-    //     color: #fff;
-    //   }
-    // }
   }
+
+  .component_item {
+    @include displayFlex($gap: 8px, $justify: start);
+    padding: 20px;
+    padding-inline-end: 8px;
+    border: 1px solid #fff;
+    width: 95%;
+    color: #fff;
+    margin: 0 auto;
+    transition: 0.5s;
+    border-radius: 4px;
+    user-select: none;
+    &:hover {
+      background: #fff;
+      color: $mainColor;
+    }
+    &:active {
+      cursor: grabbing;
+    }
+    .pi:last-of-type {
+      cursor: grab;
+      opacity: 0.4;
+      margin-inline-start: auto;
+      font-size: 15px;
+    }
+  }
+
+
   .pages {
     @include displayFlex($justify: start, $gap: 10px);
     margin-bottom: 25px;
@@ -514,6 +543,15 @@ const showAddSectionPopup = ref(false)
           min-height: 66px;
           border: 1px solid #e4e4e4;
           border-radius: 8px;
+          transition: 0.3s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: $mainColor;
+          &.drag-over {
+            border: 2px dashed $mainColor;
+            background: #f9f9f9;
+          }
         }
       }
       &.add_section {
@@ -538,4 +576,14 @@ const showAddSectionPopup = ref(false)
     }
   }
 }
+
+  .drop_placeholder {
+    width: 100%;
+    padding: 12px;
+    border: 2px dashed $mainColor;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 14px;
+    opacity: 0.7;
+  }
 </style>

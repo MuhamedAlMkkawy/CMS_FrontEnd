@@ -1,5 +1,5 @@
 <template>
-  <div class="page modify_project_page gradient_background">
+  <div class="page modify_project_page">
     <div class="container modify_project_content">
       <VeeForm 
         :validation-schema="modifyProjectSchema" 

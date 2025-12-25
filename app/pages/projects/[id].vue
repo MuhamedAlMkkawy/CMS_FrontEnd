@@ -10,19 +10,20 @@
         </div>
       </div>
       <hr />
-      <ul class="components">
+      <div class="components">
         <div
           v-for="item in sidebarComponents"
           :key="item.type"
           class="component_item"
           draggable="true"
-          @dragstart="onDragStart(item)"
+          @dragstart="onDragStart(item, $event)"
+          @dragend="onDragEnd($event)"
         >
           <i :class="item.icon" class="component_icon" />
           <span class="component_title">{{ item.label }}</span>
           <i class="pi pi-equals"></i>
         </div>
-      </ul>
+      </div>
     </div>
     <div class="project_content">
       <div class="pages">
@@ -80,37 +81,43 @@
         </div>
 
         <hr />
+
         <div :class="['content_items', `items_${section.layout_items}`]">
           <div
+            v-for="(slot, index) in getSlotsCount(section)"
+            :key="index"
             class="content_item section_component"
             :class="{ 'drag-over': section.isDragOver }"
             @dragover.prevent
-            @dragenter="onDragEnter(section)"
-            @dragleave="onDragLeave(section)"
+            @dragenter="onDragEnter(section, $event)"
+            @dragleave="onDragLeave(section, $event)"
             @drop="onDrop(section)"
           >
-            <div
-              v-for="(comp, index) in section.components"
-              :key="comp.id"
-              class="section_block"
-            >
-              <i :class="comp.icon"></i>
-              <span>{{ comp.label }}</span>
+            <!-- Slot contains a component -->
+            <template v-if="section.components[index]">
+              <div class="section_block">
+                <div class="section_info">
+                  <i :class="section.components[index].icon"></i>
+                  <span>{{ section.components[index].label }}</span>
+                </div>
 
-              <!-- controls -->
+              </div>
               <button class="remove_component" @click.stop="removeComponent(section, index)">
                 <i class="pi pi-trash"></i>
               </button>
-            </div>
+            </template>
 
-            <!-- empty state -->
-            <div v-if="!section.components.length" class="empty_placeholder">
-              Drag components here
-            </div>
+            <!-- Empty slot -->
+            <template v-else>
+              <div class="section_component empty_placeholder active">
+                Drag components here
+              </div>
+            </template>
           </div>
-
-
         </div>
+
+
+
       </div>
 
       <div class="section add_section" @click="showAddSectionPopup = true"><i class="pi pi-plus"></i></div>
@@ -210,7 +217,7 @@ const sidebarComponents = [
   {
     type: "heading",
     label: "Heading",
-    icon: "pi pi-heading",
+    icon: "pi pi-info-circle",
   },
   {
     type: "accordion",
@@ -280,11 +287,23 @@ const sections = ref([
   {
     id: 1,
     name: "Header",
-    layout_items: 3,
+    layout_items: 1,
+    components: [], // { type, label, icon }
+    isDragOver: false,
+  },
+  {
+    id: 2,
+    name: "Hero",
+    layout_items: 1,
     components: [], // { type, label, icon }
     isDragOver: false,
   },
 ]);
+
+
+const getSlotsCount = (section) => {
+  return section.components.length + 1;  // always add 1 empty slot
+};
 
 
 // ------------------------------
@@ -292,18 +311,41 @@ const sections = ref([
 // ------------------------------
 const draggedComponent = ref(null);
 
-const onDragStart = (item) => {
+const isDragging = ref(false);
+
+const onDragStart = (item, e) => {
   draggedComponent.value = item;
+  isDragging.value = true;
+  e.dataTransfer.effectAllowed = "move";
+  e.target.classList.add("dragging");
+};
+
+const onDragEnd = (e) => {
+  draggedComponent.value = null;
+  isDragging.value = false;
+  e.target.classList.remove("dragging");
 };
 
 
-const onDragEnter = (section) => {
+const onDragEnter = (section, e) => {
   section.isDragOver = true;
+
+  // Get ONLY the empty placeholder inside THIS slot
+  const placeholder = e.currentTarget.querySelector('.empty_placeholder');
+  if (placeholder && draggedComponent.value) {
+    placeholder.classList.add("is-dragging");
+  }
 };
 
-const onDragLeave = (section) => {
+const onDragLeave = (section, e) => {
   section.isDragOver = false;
+
+  const placeholder = e.currentTarget.querySelector('.empty_placeholder');
+  if (placeholder) {
+    placeholder.classList.remove("is-dragging");
+  }
 };
+
 
 
 const onDrop = (section) => {
@@ -311,14 +353,13 @@ const onDrop = (section) => {
 
   section.components.push({
     id: Date.now(),
-    type: draggedComponent.value.type,
-    label: draggedComponent.value.label,
-    icon: draggedComponent.value.icon,
+    ...draggedComponent.value
   });
 
-  section.isDragOver = false;
   draggedComponent.value = null;
+  section.isDragOver = false;
 };
+
 
 // ---------------------------
 // HANDLE REMOVE THE COMPONENT
@@ -344,7 +385,9 @@ const changeLayout = (section) => {
 // ----------------------------
 const showAddSectionPopup = ref(false)
 
-
+watchEffect(()=> {
+  console.log(sections.value)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -395,19 +438,18 @@ const showAddSectionPopup = ref(false)
       }
     }
 
-    ul.components {
+    .components {
       @include displayFlex($direction: column, $justify: start, $align: start);
       // margin-top: 20px;
       max-height: 90vh;
       overflow-y: scroll;
       padding-block: 20px 0px;
-
     }
   }
 
   .component_item {
     @include displayFlex($gap: 8px, $justify: start);
-    padding: 20px;
+    padding: 8px;
     padding-inline-end: 8px;
     border: 1px solid #fff;
     width: 95%;
@@ -416,15 +458,20 @@ const showAddSectionPopup = ref(false)
     transition: 0.5s;
     border-radius: 4px;
     user-select: none;
+    cursor: grab; 
     &:hover {
       background: #fff;
       color: $mainColor;
     }
-    &:active {
-      cursor: grabbing;
-    }
+  &.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+    transform: scale(0.95);
+    border: 1px dashed $mainColor;
+    background: lighten($mainColor, 20%);
+    color: $mainColor;
+  }
     .pi:last-of-type {
-      cursor: grab;
       opacity: 0.4;
       margin-inline-start: auto;
       font-size: 15px;
@@ -541,6 +588,7 @@ const showAddSectionPopup = ref(false)
         max-width: unset;
         .section_component{
           min-height: 66px;
+          // padding-inline: 8px;
           border: 1px solid #e4e4e4;
           border-radius: 8px;
           transition: 0.3s;
@@ -548,11 +596,67 @@ const showAddSectionPopup = ref(false)
           align-items: center;
           justify-content: center;
           color: $mainColor;
-          &.drag-over {
-            border: 2px dashed $mainColor;
-            background: #f9f9f9;
+          position: relative;
+          background: $mainColor;
+          color: #fff;
+          &.empty_placeholder {
+            width: 100%;
+            padding: 12px;
+            border: 1px dashed $mainColor;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 14px;
+            color: $mainColor;
+            background:#f1f1f1 !important;
+            &:hover{
+              border: 1px dashed $mainColor !important;
+            }
+            &.is-dragging {
+              // background: rgba($mainColor, 0.1) !important;
+              border: 2px dashed $mainColor !important;
+              animation: pulse-drop 2s infinite ease-in-out;
+              @keyframes pulse-drop {
+                0% { opacity: 1; }
+                50% { opacity: 0.8; }
+                100% { opacity: 1; }
+              }
+            }
+          }
+          .section_block{
+            width: 100%;
+            position: relative;
+            .section_info{
+              @include displayFlex($gap : 8px);
+              max-width: 400px;
+              margin: 0 auto;
+              i , span{
+                font-size: 20px;
+              }
+            }
+          }
+          button.remove_component{
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            padding-inline: 25px;
+            height: 100%;
+            border-radius: 0 4px 4px 0;
+            background: $dangerColor;
+            border:1px solid $dangerColor;
+            color: #fff;
+            i.pi{
+              font-size: 20px;
+            }
+            &:hover{
+              background: #fff;
+              color: $dangerColor;
+            }
           }
         }
+      }
+      .drag-over {
+        border: 2px dashed $mainColor;
+        background: red;
       }
       &.add_section {
         cursor: pointer;
@@ -577,13 +681,4 @@ const showAddSectionPopup = ref(false)
   }
 }
 
-  .drop_placeholder {
-    width: 100%;
-    padding: 12px;
-    border: 2px dashed $mainColor;
-    border-radius: 6px;
-    text-align: center;
-    font-size: 14px;
-    opacity: 0.7;
-  }
 </style>

@@ -116,15 +116,19 @@
           </div>
         </div>
 
-
-
       </div>
 
-      <div class="section add_section" @click="showAddSectionPopup = true"><i class="pi pi-plus"></i></div>
+      <div 
+        class="section add_section" 
+        @click="showAddSectionPopup = true"
+      >
+        <i class="pi pi-plus"></i>
+      </div>
     </div>
     <AddSectionPopup
       v-if="showAddSectionPopup"
       @handleShowAddSectionPopup="showAddSectionPopup = false"
+      @handleAddSection="handleAddSection"
     />
   </div>
 </template>
@@ -299,6 +303,18 @@ const sections = ref([
     isDragOver: false,
   },
 ]);
+
+
+// -------------------------
+// HANDLE ADD NEW SECTION
+// -------------------------
+const handleAddSection = (section) => {
+  sections.value.push({
+    id : sections.length,
+    ...section
+  })
+  showAddSectionPopup.value = false
+}
 
 
 const getSlotsCount = (section) => {

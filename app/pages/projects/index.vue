@@ -60,8 +60,8 @@
         max-width: 400px;
       }
       .content_items{
-        @include displayFlex($wrap : wrap , $align : stretch , $gap : 20px);
-        width: 100%;
+        // @include displayFlex($wrap : wrap , $align : stretch , $gap : 20px);
+        // width: 100%;
         .content_item{
           border: 1px solid #fff;
           padding: clamp(20px , 2.5vw , 50px);

@@ -117,7 +117,6 @@
         </div>
 
       </div>
-
       <div 
         class="section add_section" 
         @click="showAddSectionPopup = true"
@@ -454,44 +453,6 @@ watchEffect(()=> {
       }
     }
 
-    .components {
-      @include displayFlex($direction: column, $justify: start, $align: start);
-      // margin-top: 20px;
-      max-height: 90vh;
-      overflow-y: scroll;
-      padding-block: 20px 0px;
-    }
-  }
-
-  .component_item {
-    @include displayFlex($gap: 8px, $justify: start);
-    padding: 8px;
-    padding-inline-end: 8px;
-    border: 1px solid #fff;
-    width: 95%;
-    color: #fff;
-    margin: 0 auto;
-    transition: 0.5s;
-    border-radius: 4px;
-    user-select: none;
-    cursor: grab; 
-    &:hover {
-      background: #fff;
-      color: $mainColor;
-    }
-  &.dragging {
-    opacity: 0.5;
-    cursor: grabbing;
-    transform: scale(0.95);
-    border: 1px dashed $mainColor;
-    background: lighten($mainColor, 20%);
-    color: $mainColor;
-  }
-    .pi:last-of-type {
-      opacity: 0.4;
-      margin-inline-start: auto;
-      font-size: 15px;
-    }
   }
 
 
@@ -550,148 +511,152 @@ watchEffect(()=> {
   .project_sections {
     @include displayFlex($direction: column);
     margin-top: 20px;
-    .section {
-      border: 1px dashed $mainColor;
-      flex-grow: 1;
-      width: 100%;
-      min-height: 50px;
-      padding-block: 20px;
-      border-radius: 4px;
-      padding-inline: 20px;
-      min-height: 200px;
-      .section_header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-bottom: 15px;
-        .section_title {
-          font-size: clamp(20px, 2.5vw, 30px);
-          font-weight: 500;
-          padding-bottom: 8px;
-        }
-        .buttons {
-          @include displayFlex($gap: 10px);
-          button.section_control {
-            min-width: 40px;
-            height: 40px;
-            border-radius: 4px;
-            border: 1px solid $mainColor;
-            font-size: 20px;
-            color: $mainColor;
-            padding-inline: 5px;
-            &.layout_design{
-              display: flex;
-              align-items: center;  
-              justify-content: center;
-            }
-            &.pi-eye{
-              border-color: $dangerColor;
-              color: $dangerColor;
-            }
-            &:hover{
-              background: $mainColor;
-              color: #fff;
-              &.pi-eye{
-                background: $dangerColor;
-              }
-            }
-          }
-        }
+  }
+  .section {
+    border: 1px dashed $mainColor;
+    flex-grow: 1;
+    width: 100%;
+    min-height: 50px;
+    padding-block: 20px;
+    border-radius: 4px;
+    padding-inline: 20px;
+    min-height: 200px;
+    .section_header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 15px;
+      .section_title {
+        font-size: clamp(20px, 2.5vw, 30px);
+        font-weight: 500;
+        padding-bottom: 8px;
       }
-      .content_items{
-        width: 100%;
-        margin-block-start: 30px;
-        max-width: unset;
-        .section_component{
-          min-height: 66px;
-          // padding-inline: 8px;
-          border: 1px solid #e4e4e4;
-          border-radius: 8px;
-          transition: 0.3s;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+      .buttons {
+        @include displayFlex($gap: 10px);
+        button.section_control {
+          min-width: 40px;
+          height: 40px;
+          border-radius: 4px;
+          border: 1px solid $mainColor;
+          font-size: 20px;
           color: $mainColor;
-          position: relative;
-          background: $mainColor;
-          color: #fff;
-          &.empty_placeholder {
-            width: 100%;
-            padding: 12px;
-            border: 1px dashed $mainColor;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 14px;
-            color: $mainColor;
-            background:#f1f1f1 !important;
-            &:hover{
-              border: 1px dashed $mainColor !important;
-            }
-            &.is-dragging {
-              // background: rgba($mainColor, 0.1) !important;
-              border: 2px dashed $mainColor !important;
-              animation: pulse-drop 2s infinite ease-in-out;
-              @keyframes pulse-drop {
-                0% { opacity: 1; }
-                50% { opacity: 0.8; }
-                100% { opacity: 1; }
-              }
-            }
+          padding-inline: 5px;
+          &.layout_design{
+            display: flex;
+            align-items: center;  
+            justify-content: center;
           }
-          .section_block{
-            width: 100%;
-            position: relative;
-            .section_info{
-              @include displayFlex($gap : 8px);
-              max-width: 400px;
-              margin: 0 auto;
-              i , span{
-                font-size: 20px;
-              }
-            }
+          &.pi-eye{
+            border-color: $dangerColor;
+            color: $dangerColor;
           }
-          button.remove_component{
-            position: absolute;
-            top: 0px;
-            right: 0px;
-            padding-inline: 25px;
-            height: 100%;
-            border-radius: 0 4px 4px 0;
-            background: $dangerColor;
-            border:1px solid $dangerColor;
+          &:hover{
+            background: $mainColor;
             color: #fff;
-            i.pi{
-              font-size: 20px;
-            }
-            &:hover{
-              background: #fff;
-              color: $dangerColor;
+            &.pi-eye{
+              background: $dangerColor;
             }
           }
         }
       }
-      .drag-over {
-        border: 2px dashed $mainColor;
-        background: red;
-      }
-      &.add_section {
-        cursor: pointer;
-        width: 80px;
-        position: fixed;
-        bottom: 50px;
-        right: 50px;
+    }
+    .content_items{
+      width: 100%;
+      margin-block-start: 30px;
+      max-width: unset;
+      .section_component{
+        min-height: 66px;
+        // padding-inline: 8px;
+        border: 1px solid #e4e4e4;
+        border-radius: 8px;
+        transition: 0.3s;
         display: flex;
         align-items: center;
         justify-content: center;
-        min-height: unset;
-        i.pi {
-          font-size: 25px;
+        color: $mainColor;
+        position: relative;
+        background: $mainColor;
+        color: #fff;
+        &.empty_placeholder {
+          width: 100%;
+          padding: 12px;
+          border: 1px dashed $mainColor;
+          border-radius: 6px;
+          text-align: center;
+          font-size: 14px;
+          color: $mainColor;
+          background:#f1f1f1 !important;
+          &:hover{
+            border: 1px dashed $mainColor !important;
+          }
+          &.is-dragging {
+            // background: rgba($mainColor, 0.1) !important;
+            border: 2px dashed $mainColor !important;
+            animation: pulse-drop 2s infinite ease-in-out;
+            @keyframes pulse-drop {
+              0% { opacity: 1; }
+              50% { opacity: 0.8; }
+              100% { opacity: 1; }
+            }
+          }
         }
-        transition: 0.5s;
-        &:hover {
-          background: $mainColor;
+        .section_block{
+          width: 100%;
+          position: relative;
+          .section_info{
+            @include displayFlex($gap : 8px);
+            max-width: 400px;
+            margin: 0 auto;
+            i , span{
+              font-size: 20px;
+            }
+          }
+        }
+        button.remove_component{
+          position: absolute;
+          top: 0px;
+          right: 0px;
+          padding-inline: 25px;
+          height: 100%;
+          border-radius: 0 4px 4px 0;
+          background: $dangerColor;
+          border:1px solid $dangerColor;
           color: #fff;
+          i.pi{
+            font-size: 20px;
+          }
+          &:hover{
+            background: #fff;
+            color: $dangerColor;
+          }
         }
+      }
+    }
+    .drag-over {
+      border: 2px dashed $mainColor;
+      background: red;
+    }
+    &.add_section {
+      cursor: pointer;
+      // width: 80px;
+      // position: fixed;
+      // bottom: 50px;
+      // right: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: unset;
+      margin: 20px 0 0 auto ;
+      border-style: solid;
+      background: $mainColor;
+      color: #fff;
+      i.pi {
+        font-size: 25px;
+      }
+      transition: 0.5s;
+      &:hover {
+        background: transparent;
+        color: $mainColor;
       }
     }
   }
